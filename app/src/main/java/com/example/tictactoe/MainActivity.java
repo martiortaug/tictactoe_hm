@@ -10,5 +10,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //obteniendo el PlayerName del archivo PlayerName.class
+        final String getPlayerName = getIntent().getStringExtra("playerName");
     }
 }
