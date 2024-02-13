@@ -13,7 +13,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Tic Tac Toe"
-        android:fontFamily="sans-serif-condensed"
+        android:fontFamily="sans-serif"
         android:textColor="#FFFFFF"
         android:textSize="30sp"
         android:textStyle="bold"/>
