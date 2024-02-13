@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -39,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
 
     private String playerUniqueId = "0";
 
-    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Partida");
+    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReferenceFromUrl("https://tictactoe-hm-default-rtdb.europe-west1.firebasedatabase.app/");
 
 
     private boolean opponentFound = false;
@@ -56,7 +57,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        firebaseInit();
 
         player1Layout = findViewById(R.id.player1Layout);
         player2Layout = findViewById(R.id.player2Layout);
@@ -73,7 +73,6 @@ public class MainActivity extends AppCompatActivity {
 
         player1TV = findViewById(R.id.player1TV);
         player2TV = findViewById(R.id.player2TV);
-
 
         //obteniendo el PlayerName del archivo PlayerName.class
         final String getPlayerName = getIntent().getStringExtra("playerName");
@@ -100,16 +99,17 @@ public class MainActivity extends AppCompatActivity {
         // mostrar el nombre del jugador en el layout
         player1TV.setText(getPlayerName);
 
-        databaseReference.child("Conexiones").addValueEventListener(new ValueEventListener() {
+        databaseReference.child("conexiones").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (opponentFound){
+                if (!opponentFound){
                     if (snapshot.hasChildren()) {
 
-                        for (DataSnapshot connections: snapshot.getChildren()) {
-                            String conId = connections.getKey();
+                        for (DataSnapshot conexiones: snapshot.getChildren()) {
 
-                            int getPlayersCount = (int)connections.getChildrenCount();
+                            String conId = conexiones.getKey();
+
+                            int getPlayersCount = (int)conexiones.getChildrenCount();
 
                             if (status.equals("waiting")) {
                                 if (getPlayersCount == 2) {
@@ -118,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
 
                                     boolean playerFound = false;
 
-                                    for (DataSnapshot players : connections.getChildren())
+                                    for (DataSnapshot players : conexiones.getChildren())
                                     {
                                         String getPlayerUniqueId = players.getKey();
 
@@ -141,15 +141,15 @@ public class MainActivity extends AppCompatActivity {
                                                 progressDialog.dismiss();
                                             }
 
-                                            databaseReference.child("Conexiones").removeEventListener(this);
+                                            databaseReference.child("conexiones").removeEventListener(this);
                                         }
                                     }
                                 }
                             }
                             else {
                                 if (getPlayersCount == 1) {
-                                    connections.child(playerUniqueId).child("player_name").getRef().setValue(getPlayerName);
-                                    for (DataSnapshot players : connections.getChildren()) {
+                                    conexiones.child(playerUniqueId).child("player_name").getRef().setValue(getPlayerName);
+                                    for (DataSnapshot players : conexiones.getChildren()) {
                                         String getOpponentName = players.child("player_name").getValue(String.class);
                                         opponentUniqueId = players.getKey();
 
@@ -168,7 +168,7 @@ public class MainActivity extends AppCompatActivity {
                                             progressDialog.dismiss();
                                         }
 
-                                        databaseReference.child("Conexiones").removeEventListener(this);
+                                        databaseReference.child("conexiones").removeEventListener(this);
                                         break;
 
                                     }
@@ -176,7 +176,7 @@ public class MainActivity extends AppCompatActivity {
                             }
                         }
 
-                        if(!opponentFound && status.equals("waiting")) {
+                        if(!opponentFound && !status.equals("waiting")) {
                             String connectionUniqueId = String.valueOf(System.currentTimeMillis());
 
                             snapshot.child(connectionUniqueId).child(playerUniqueId).child("player_name").getRef().setValue(getPlayerName);
@@ -190,13 +190,15 @@ public class MainActivity extends AppCompatActivity {
                         String connectionUniqueId = String.valueOf(System.currentTimeMillis());
 
                         snapshot.child(connectionUniqueId).child(playerUniqueId).child("player_name").getRef().setValue(getPlayerName);
+
+                        status = "waiting";
                     }
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                progressDialog.dismiss();
+
             }
         });
 
@@ -206,40 +208,38 @@ public class MainActivity extends AppCompatActivity {
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()){
                     if (dataSnapshot.getChildrenCount() == 2) {
 
-                        final int getBoxPosition = Integer.parseInt(Objects.requireNonNull(dataSnapshot.child("box_position").getValue(String.class)));
+                        final int getBoxPosition = Integer.parseInt(dataSnapshot.child("box_position").getValue(String.class));
 
                         final String getPlayerId = dataSnapshot.child("player_id").getValue(String.class);
 
                         if (!doneBoxes.contains(String.valueOf(getBoxPosition))) {
                             doneBoxes.add(String.valueOf(getBoxPosition));
-                            switch (getBoxPosition) {
-                                case 1:
-                                    selectBox(image1, getBoxPosition, getPlayerId);
-                                    break;
-                                case 2:
-                                    selectBox(image2, getBoxPosition, getPlayerId);
-                                    break;
-                                case 3:
-                                    selectBox(image3, getBoxPosition, getPlayerId);
-                                    break;
-                                case 4:
-                                    selectBox(image4, getBoxPosition, getPlayerId);
-                                    break;
-                                case 5:
-                                    selectBox(image5, getBoxPosition, getPlayerId);
-                                    break;
-                                case 6:
-                                    selectBox(image6, getBoxPosition, getPlayerId);
-                                    break;
-                                case 7:
-                                    selectBox(image7, getBoxPosition, getPlayerId);
-                                    break;
-                                case 8:
-                                    selectBox(image8, getBoxPosition, getPlayerId);
-                                    break;
-                                case 9:
-                                    selectBox(image9, getBoxPosition, getPlayerId);
-                                    break;
+                            if (getBoxPosition == 1) {
+                                selectBox(image1, getBoxPosition, getPlayerId);
+                            }
+                            else if (getBoxPosition == 2) {
+                                selectBox(image2, getBoxPosition, getPlayerId);
+                            }
+                            else if (getBoxPosition == 3) {
+                                selectBox(image3, getBoxPosition, getPlayerId);
+                            }
+                            else if (getBoxPosition == 4) {
+                                selectBox(image4, getBoxPosition, getPlayerId);
+                            }
+                            else if (getBoxPosition == 5) {
+                                selectBox(image5, getBoxPosition, getPlayerId);
+                            }
+                            else if (getBoxPosition == 6) {
+                                selectBox(image6, getBoxPosition, getPlayerId);
+                            }
+                            else if (getBoxPosition == 7) {
+                                selectBox(image7, getBoxPosition, getPlayerId);
+                            }
+                            else if (getBoxPosition == 8) {
+                                selectBox(image8, getBoxPosition, getPlayerId);
+                            }
+                            else if (getBoxPosition == 9) {
+                                selectBox(image9, getBoxPosition, getPlayerId);
                             }
                         }
                     }
@@ -284,10 +284,11 @@ public class MainActivity extends AppCompatActivity {
         image1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (doneBoxes.contains("1") && playerTurn.equals(playerUniqueId)) {
+                if (!doneBoxes.contains("1") && playerTurn.equals(playerUniqueId)) {
                     ((ImageView) v).setImageResource(R.drawable.cruz);
                     databaseReference.child("turns").child(connectionId).child(String.valueOf(doneBoxes.size() + 1)).child("box_position").setValue("1");
                     databaseReference.child("turns").child(connectionId).child(String.valueOf(doneBoxes.size() + 1)).child("player_id").setValue(playerUniqueId);
+                    playerTurn = opponentUniqueId;
                 }
             }
         });
@@ -295,10 +296,11 @@ public class MainActivity extends AppCompatActivity {
         image2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (doneBoxes.contains("2") && playerTurn.equals(playerUniqueId)) {
+                if (!doneBoxes.contains("2") && playerTurn.equals(playerUniqueId)) {
                     ((ImageView) v).setImageResource(R.drawable.cruz);
                     databaseReference.child("turns").child(connectionId).child(String.valueOf(doneBoxes.size() + 1)).child("box_position").setValue("2");
                     databaseReference.child("turns").child(connectionId).child(String.valueOf(doneBoxes.size() + 1)).child("player_id").setValue(playerUniqueId);
+                    playerTurn = opponentUniqueId;
                 }
             }
         });
@@ -306,10 +308,11 @@ public class MainActivity extends AppCompatActivity {
         image3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (doneBoxes.contains("3") && playerTurn.equals(playerUniqueId)) {
+                if (!doneBoxes.contains("3") && playerTurn.equals(playerUniqueId)) {
                     ((ImageView) v).setImageResource(R.drawable.cruz);
                     databaseReference.child("turns").child(connectionId).child(String.valueOf(doneBoxes.size() + 1)).child("box_position").setValue("3");
                     databaseReference.child("turns").child(connectionId).child(String.valueOf(doneBoxes.size() + 1)).child("player_id").setValue(playerUniqueId);
+                    playerTurn = opponentUniqueId;
                 }
             }
         });
@@ -317,10 +320,11 @@ public class MainActivity extends AppCompatActivity {
         image4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (doneBoxes.contains("4") && playerTurn.equals(playerUniqueId)) {
+                if (!doneBoxes.contains("4") && playerTurn.equals(playerUniqueId)) {
                     ((ImageView) v).setImageResource(R.drawable.cruz);
                     databaseReference.child("turns").child(connectionId).child(String.valueOf(doneBoxes.size() + 1)).child("box_position").setValue("4");
                     databaseReference.child("turns").child(connectionId).child(String.valueOf(doneBoxes.size() + 1)).child("player_id").setValue(playerUniqueId);
+                    playerTurn = opponentUniqueId;
                 }
             }
         });
@@ -328,10 +332,11 @@ public class MainActivity extends AppCompatActivity {
         image5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (doneBoxes.contains("5") && playerTurn.equals(playerUniqueId)) {
+                if (!doneBoxes.contains("5") && playerTurn.equals(playerUniqueId)) {
                     ((ImageView) v).setImageResource(R.drawable.cruz);
                     databaseReference.child("turns").child(connectionId).child(String.valueOf(doneBoxes.size() + 1)).child("box_position").setValue("5");
                     databaseReference.child("turns").child(connectionId).child(String.valueOf(doneBoxes.size() + 1)).child("player_id").setValue(playerUniqueId);
+                    playerTurn = opponentUniqueId;
                 }
             }
         });
@@ -339,10 +344,11 @@ public class MainActivity extends AppCompatActivity {
         image6.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (doneBoxes.contains("6") && playerTurn.equals(playerUniqueId)) {
+                if (!doneBoxes.contains("6") && playerTurn.equals(playerUniqueId)) {
                     ((ImageView) v).setImageResource(R.drawable.cruz);
                     databaseReference.child("turns").child(connectionId).child(String.valueOf(doneBoxes.size() + 1)).child("box_position").setValue("6");
                     databaseReference.child("turns").child(connectionId).child(String.valueOf(doneBoxes.size() + 1)).child("player_id").setValue(playerUniqueId);
+                    playerTurn = opponentUniqueId;
                 }
             }
         });
@@ -350,10 +356,11 @@ public class MainActivity extends AppCompatActivity {
         image7.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (doneBoxes.contains("7") && playerTurn.equals(playerUniqueId)) {
+                if (!doneBoxes.contains("7") && playerTurn.equals(playerUniqueId)) {
                     ((ImageView) v).setImageResource(R.drawable.cruz);
                     databaseReference.child("turns").child(connectionId).child(String.valueOf(doneBoxes.size() + 1)).child("box_position").setValue("7");
                     databaseReference.child("turns").child(connectionId).child(String.valueOf(doneBoxes.size() + 1)).child("player_id").setValue(playerUniqueId);
+                    playerTurn = opponentUniqueId;
                 }
             }
         });
@@ -361,10 +368,11 @@ public class MainActivity extends AppCompatActivity {
         image8.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (doneBoxes.contains("8") && playerTurn.equals(playerUniqueId)) {
+                if (!doneBoxes.contains("8") && playerTurn.equals(playerUniqueId)) {
                     ((ImageView) v).setImageResource(R.drawable.cruz);
                     databaseReference.child("turns").child(connectionId).child(String.valueOf(doneBoxes.size() + 1)).child("box_position").setValue("8");
                     databaseReference.child("turns").child(connectionId).child(String.valueOf(doneBoxes.size() + 1)).child("player_id").setValue(playerUniqueId);
+                    playerTurn = opponentUniqueId;
                 }
             }
         });
@@ -372,10 +380,11 @@ public class MainActivity extends AppCompatActivity {
         image9.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (doneBoxes.contains("9") && playerTurn.equals(playerUniqueId)) {
+                if (!doneBoxes.contains("9") && playerTurn.equals(playerUniqueId)) {
                     ((ImageView) v).setImageResource(R.drawable.cruz);
                     databaseReference.child("turns").child(connectionId).child(String.valueOf(doneBoxes.size() + 1)).child("box_position").setValue("9");
                     databaseReference.child("turns").child(connectionId).child(String.valueOf(doneBoxes.size() + 1)).child("player_id").setValue(playerUniqueId);
+                    playerTurn = opponentUniqueId;
                 }
             }
         });
@@ -391,36 +400,6 @@ public class MainActivity extends AppCompatActivity {
             player2Layout.setBackgroundResource(R.drawable.round_back_dark_blue_stroke);
             player1Layout.setBackgroundResource(R.drawable.round_back_dark_blue_20);
         }
-    }
-
-    private void firebaseInit() {
-        // Create a map to represent the new data
-        Map<String, Object> partidaData = new HashMap<>();
-        partidaData.put("A", Arrays.asList(null, "", "", ""));
-        partidaData.put("B", Arrays.asList(null, "", "", ""));
-        partidaData.put("C", Arrays.asList(null, "", "", ""));
-        partidaData.put("Fecha", "");
-        partidaData.put("Jugador1", "");
-        partidaData.put("Jugador2", "");
-
-        // Write the new data to the "Partida" node
-        databaseReference.setValue(partidaData)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        // Write was successful!
-                        // TODO: Do something with the success (like showing a success message to the user)
-                        Log.d("MainActivity", "Write to database was successful");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        // Write failed
-                        // TODO: Do something with the failure (like showing an error message to the user)
-                        Log.w("MainActivity", "Failed to write to database", e);
-                    }
-                });
     }
 
     private void selectBox(ImageView imageView, int selectedBoxPosition, String selectedByPlayer) {
