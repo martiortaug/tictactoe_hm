@@ -134,8 +134,8 @@ public class MainActivity extends AppCompatActivity {
                                             connectionId = conId;
                                             opponentFound = true;
 
-                                            databaseReference.child("turns").child(connectionId).addValueEventListener(turnsEventListener);
-                                            databaseReference.child("won").child(connectionId).addValueEventListener(wonEventListener);
+                                            databaseReference.child("turnos").child(connectionId).addValueEventListener(turnsEventListener);
+                                            databaseReference.child("ganador").child(connectionId).addValueEventListener(wonEventListener);
 
                                             if (progressDialog.isShowing()) {
                                                 progressDialog.dismiss();
@@ -161,8 +161,8 @@ public class MainActivity extends AppCompatActivity {
                                         connectionId = conId;
                                         opponentFound = true;
 
-                                        databaseReference.child("turns").child(connectionId).addValueEventListener(turnsEventListener);
-                                        databaseReference.child("won").child(connectionId).addValueEventListener(wonEventListener);
+                                        databaseReference.child("turnos").child(connectionId).addValueEventListener(turnsEventListener);
+                                        databaseReference.child("ganador").child(connectionId).addValueEventListener(wonEventListener);
 
                                         if (progressDialog.isShowing()) {
                                             progressDialog.dismiss();
@@ -270,8 +270,8 @@ public class MainActivity extends AppCompatActivity {
                     windDialog.setCancelable(false);
                     windDialog.show();
 
-                    databaseReference.child("turns").child(connectionId).removeEventListener(turnsEventListener);
-                    databaseReference.child("won").child(connectionId).removeEventListener(wonEventListener);
+                    databaseReference.child("turnos").child(connectionId).removeEventListener(turnsEventListener);
+                    databaseReference.child("ganador").child(connectionId).removeEventListener(wonEventListener);
                 }
             }
 
@@ -286,8 +286,8 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (!doneBoxes.contains("1") && playerTurn.equals(playerUniqueId)) {
                     ((ImageView) v).setImageResource(R.drawable.cruz);
-                    databaseReference.child("turns").child(connectionId).child(String.valueOf(doneBoxes.size() + 1)).child("box_position").setValue("1");
-                    databaseReference.child("turns").child(connectionId).child(String.valueOf(doneBoxes.size() + 1)).child("player_id").setValue(playerUniqueId);
+                    databaseReference.child("turnos").child(connectionId).child(String.valueOf(doneBoxes.size() + 1)).child("box_position").setValue("1");
+                    databaseReference.child("turnos").child(connectionId).child(String.valueOf(doneBoxes.size() + 1)).child("player_id").setValue(playerUniqueId);
                     playerTurn = opponentUniqueId;
                 }
             }
@@ -298,8 +298,8 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (!doneBoxes.contains("2") && playerTurn.equals(playerUniqueId)) {
                     ((ImageView) v).setImageResource(R.drawable.cruz);
-                    databaseReference.child("turns").child(connectionId).child(String.valueOf(doneBoxes.size() + 1)).child("box_position").setValue("2");
-                    databaseReference.child("turns").child(connectionId).child(String.valueOf(doneBoxes.size() + 1)).child("player_id").setValue(playerUniqueId);
+                    databaseReference.child("turnos").child(connectionId).child(String.valueOf(doneBoxes.size() + 1)).child("box_position").setValue("2");
+                    databaseReference.child("turnos").child(connectionId).child(String.valueOf(doneBoxes.size() + 1)).child("player_id").setValue(playerUniqueId);
                     playerTurn = opponentUniqueId;
                 }
             }
@@ -310,8 +310,8 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (!doneBoxes.contains("3") && playerTurn.equals(playerUniqueId)) {
                     ((ImageView) v).setImageResource(R.drawable.cruz);
-                    databaseReference.child("turns").child(connectionId).child(String.valueOf(doneBoxes.size() + 1)).child("box_position").setValue("3");
-                    databaseReference.child("turns").child(connectionId).child(String.valueOf(doneBoxes.size() + 1)).child("player_id").setValue(playerUniqueId);
+                    databaseReference.child("turnos").child(connectionId).child(String.valueOf(doneBoxes.size() + 1)).child("box_position").setValue("3");
+                    databaseReference.child("turnos").child(connectionId).child(String.valueOf(doneBoxes.size() + 1)).child("player_id").setValue(playerUniqueId);
                     playerTurn = opponentUniqueId;
                 }
             }
@@ -322,8 +322,8 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (!doneBoxes.contains("4") && playerTurn.equals(playerUniqueId)) {
                     ((ImageView) v).setImageResource(R.drawable.cruz);
-                    databaseReference.child("turns").child(connectionId).child(String.valueOf(doneBoxes.size() + 1)).child("box_position").setValue("4");
-                    databaseReference.child("turns").child(connectionId).child(String.valueOf(doneBoxes.size() + 1)).child("player_id").setValue(playerUniqueId);
+                    databaseReference.child("turnos").child(connectionId).child(String.valueOf(doneBoxes.size() + 1)).child("box_position").setValue("4");
+                    databaseReference.child("turnos").child(connectionId).child(String.valueOf(doneBoxes.size() + 1)).child("player_id").setValue(playerUniqueId);
                     playerTurn = opponentUniqueId;
                 }
             }
@@ -334,8 +334,8 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (!doneBoxes.contains("5") && playerTurn.equals(playerUniqueId)) {
                     ((ImageView) v).setImageResource(R.drawable.cruz);
-                    databaseReference.child("turns").child(connectionId).child(String.valueOf(doneBoxes.size() + 1)).child("box_position").setValue("5");
-                    databaseReference.child("turns").child(connectionId).child(String.valueOf(doneBoxes.size() + 1)).child("player_id").setValue(playerUniqueId);
+                    databaseReference.child("turnos").child(connectionId).child(String.valueOf(doneBoxes.size() + 1)).child("box_position").setValue("5");
+                    databaseReference.child("turnos").child(connectionId).child(String.valueOf(doneBoxes.size() + 1)).child("player_id").setValue(playerUniqueId);
                     playerTurn = opponentUniqueId;
                 }
             }
@@ -346,8 +346,8 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (!doneBoxes.contains("6") && playerTurn.equals(playerUniqueId)) {
                     ((ImageView) v).setImageResource(R.drawable.cruz);
-                    databaseReference.child("turns").child(connectionId).child(String.valueOf(doneBoxes.size() + 1)).child("box_position").setValue("6");
-                    databaseReference.child("turns").child(connectionId).child(String.valueOf(doneBoxes.size() + 1)).child("player_id").setValue(playerUniqueId);
+                    databaseReference.child("turnos").child(connectionId).child(String.valueOf(doneBoxes.size() + 1)).child("box_position").setValue("6");
+                    databaseReference.child("turnos").child(connectionId).child(String.valueOf(doneBoxes.size() + 1)).child("player_id").setValue(playerUniqueId);
                     playerTurn = opponentUniqueId;
                 }
             }
@@ -358,8 +358,8 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (!doneBoxes.contains("7") && playerTurn.equals(playerUniqueId)) {
                     ((ImageView) v).setImageResource(R.drawable.cruz);
-                    databaseReference.child("turns").child(connectionId).child(String.valueOf(doneBoxes.size() + 1)).child("box_position").setValue("7");
-                    databaseReference.child("turns").child(connectionId).child(String.valueOf(doneBoxes.size() + 1)).child("player_id").setValue(playerUniqueId);
+                    databaseReference.child("turnos").child(connectionId).child(String.valueOf(doneBoxes.size() + 1)).child("box_position").setValue("7");
+                    databaseReference.child("turnos").child(connectionId).child(String.valueOf(doneBoxes.size() + 1)).child("player_id").setValue(playerUniqueId);
                     playerTurn = opponentUniqueId;
                 }
             }
@@ -370,8 +370,8 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (!doneBoxes.contains("8") && playerTurn.equals(playerUniqueId)) {
                     ((ImageView) v).setImageResource(R.drawable.cruz);
-                    databaseReference.child("turns").child(connectionId).child(String.valueOf(doneBoxes.size() + 1)).child("box_position").setValue("8");
-                    databaseReference.child("turns").child(connectionId).child(String.valueOf(doneBoxes.size() + 1)).child("player_id").setValue(playerUniqueId);
+                    databaseReference.child("turnos").child(connectionId).child(String.valueOf(doneBoxes.size() + 1)).child("box_position").setValue("8");
+                    databaseReference.child("turnos").child(connectionId).child(String.valueOf(doneBoxes.size() + 1)).child("player_id").setValue(playerUniqueId);
                     playerTurn = opponentUniqueId;
                 }
             }
@@ -382,8 +382,8 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (!doneBoxes.contains("9") && playerTurn.equals(playerUniqueId)) {
                     ((ImageView) v).setImageResource(R.drawable.cruz);
-                    databaseReference.child("turns").child(connectionId).child(String.valueOf(doneBoxes.size() + 1)).child("box_position").setValue("9");
-                    databaseReference.child("turns").child(connectionId).child(String.valueOf(doneBoxes.size() + 1)).child("player_id").setValue(playerUniqueId);
+                    databaseReference.child("turnos").child(connectionId).child(String.valueOf(doneBoxes.size() + 1)).child("box_position").setValue("9");
+                    databaseReference.child("turnos").child(connectionId).child(String.valueOf(doneBoxes.size() + 1)).child("player_id").setValue(playerUniqueId);
                     playerTurn = opponentUniqueId;
                 }
             }
@@ -416,7 +416,7 @@ public class MainActivity extends AppCompatActivity {
         applyPlayerTurn(playerTurn);
 
         if (checkPlayerWin(selectedByPlayer)) {
-            databaseReference.child("won").child(connectionId).child("player_id").setValue(selectedByPlayer);
+            databaseReference.child("ganador").child(connectionId).child("player_id").setValue(selectedByPlayer);
         }
 
         if (doneBoxes.size() == 9) {

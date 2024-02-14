@@ -29,6 +29,10 @@
             android:layout_margin="20dp"
             android:text="Nueva partida"
             android:textColor="#FFFFFF"
+            android:shadowColor="@color/dark_blue"
+            android:shadowDx="1.5"
+            android:shadowDy="1.3"
+            android:shadowRadius="5"
             android:textStyle="bold"
             android:background="@drawable/round_back_blue"/>
 

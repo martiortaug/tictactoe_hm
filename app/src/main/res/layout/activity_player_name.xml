@@ -8,15 +8,27 @@
     android:gravity="center"
     android:background="@drawable/background"
     tools:context=".PlayerName">
-
-    <TextView
+    <androidx.cardview.widget.CardView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Tic Tac Toe"
-        android:fontFamily="sans-serif"
-        android:textColor="#FFFFFF"
-        android:textSize="30sp"
-        android:textStyle="bold"/>
+        app:cardBackgroundColor="@color/yellow"
+        app:cardCornerRadius="15dp">
+
+        <TextView
+            android:padding="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tic Tac Toe"
+            android:fontFamily="sans-serif"
+            android:textColor="@color/white"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            android:shadowColor="@color/dark_blue"
+            android:shadowDx="1.5"
+            android:shadowDy="1.3"
+            android:shadowRadius="10"/>
+
+    </androidx.cardview.widget.CardView>
 
     <EditText
         android:id="@+id/playerNameEt"
@@ -40,9 +52,13 @@
         android:layout_marginTop="40dp"
         android:background="@drawable/round_back_blue"
         android:text="Empezar Partida"
-        android:textColor="@color/dark_blue"
+        android:textColor="@color/white"
         android:textSize="18sp"
         android:textStyle="bold"
+        android:shadowColor="@color/dark_blue"
+        android:shadowDx="1.5"
+        android:shadowDy="1.3"
+        android:shadowRadius="5"
         android:id="@+id/startGameBtn"
         />
 

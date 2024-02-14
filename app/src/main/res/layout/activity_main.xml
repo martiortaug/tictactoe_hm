@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background"
+    android:background="@drawable/gradient"
     tools:context=".MainActivity">
 
     <LinearLayout
@@ -18,28 +18,27 @@
             android:id="@+id/player1Layout"
             android:layout_width="120dp"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
             android:background="@drawable/round_back_dark_blue_stroke"
-            >
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/player1TV"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Jugador 1"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:textColor="#FFFFFF"
+                android:layout_gravity="center"
                 android:layout_marginTop="20dp"
-                android:layout_gravity="center" />
+                android:text="Jugador 1"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
             <ImageView
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:src="@drawable/cruz"
-                android:layout_marginBottom="20dp"
+                android:layout_gravity="center"
                 android:layout_marginTop="20dp"
-                android:layout_gravity="center"/>
+                android:layout_marginBottom="20dp"
+                android:src="@drawable/cruz" />
         </LinearLayout>
 
         <LinearLayout
